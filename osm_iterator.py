@@ -65,6 +65,9 @@ class Element(etree._Element):
             return Coord(lat, lon)
         return self.data.get_coords_of_complex_object(self.element)
 
+    def get_bbox(self):
+        return self.data.get_bbox_of_object(self.element)
+
     def get_link(self):
         return ("http://www.openstreetmap.org/" + self.element.tag + "/" + self.element.attrib['id'])
 
@@ -84,7 +87,21 @@ class Data(object):
         lon = database[id].lon
         return lat, lon
 
-    def get_coords_of_complex_object(self, element):
+    def get_bbox_of_object(self, element):
+        if element.tag == "way" or element.tag == "relation":
+            return self.get_bbox_of_complex_object(element)
+        if element.tag == "node":
+            return self.get_bbox_of_node_object(element)
+
+    def get_bbox_of_node_object(self, element):
+        if element.tag == "node":
+            lat = element.attrib['lat']
+            lon = element.attrib['lon']
+            return {'min_lat': lat, 'min_lon': lon, 'max_lat': lat, 'max_lon': lon}
+        else:
+            raise ValueError("Not a proper element passed to get_bbox_of_node_object")
+
+    def get_bbox_of_complex_object(self, element):
         min_lat = 180
         max_lat = -180
         min_lon = 180
@@ -108,7 +125,13 @@ class Data(object):
             max_lat = max([max_lat, lat])
             min_lon = min([min_lon, lon])
             max_lon = max([max_lon, lon])
-        return Coord((min_lat + max_lat) / 2, (min_lon + max_lon) / 2)
+        return {'min_lat': min_lat, 'min_lon': min_lon, 'max_lat': max_lat, 'max_lon': max_lon}
+
+    def get_coords_of_complex_object(self, element):
+        bb = self.get_bbox_of_complex_object(element)
+        if bb == None:
+            return None
+        return Coord((bb['min_lat'] + bb['max_lat']) / 2, (bb['min_lon'] + bb['max_lon']) / 2)
 
 
     def iterate_over_data(self, fun):
