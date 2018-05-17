@@ -95,8 +95,8 @@ class Data(object):
 
     def get_bbox_of_node_object(self, lxml_element):
         if lxml_element.tag == "node":
-            lat = lxml_element.attrib['lat']
-            lon = lxml_element.attrib['lon']
+            lat = float(lxml_element.attrib['lat'])
+            lon = float(lxml_element.attrib['lon'])
             return {'min_lat': lat, 'min_lon': lon, 'max_lat': lat, 'max_lon': lon}
         else:
             raise ValueError("Not a proper lxml_element passed to get_bbox_of_node_object")
@@ -139,8 +139,8 @@ class Data(object):
             if lxml_element.tag != "node" and lxml_element.tag != "way" and lxml_element.tag != "relation":
                 continue
             if lxml_element.tag == "node":
-                lat = decimal.Decimal(lxml_element.attrib['lat'])
-                lon = decimal.Decimal(lxml_element.attrib['lon'])
+                lat = decimal.Decimal(lxml_element.attrib['lat']) #TODO HACk - in one place I use decimal, in one float...
+                lon = decimal.Decimal(lxml_element.attrib['lon']) #TODO HACK - see above
                 osm_id = int(lxml_element.attrib['id'])
                 self.node_database[osm_id] = Coord(lat, lon)
             if lxml_element.tag == "way":
