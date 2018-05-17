@@ -48,6 +48,16 @@ class Element(etree._Element):
             returned += [tag.attrib['k']]
         return returned
 
+    def get_tag_dictionary(self):
+        returned = {}
+        for tag in self.element:
+            if tag.tag != "tag":
+                continue
+            key = tag.attrib['k']
+            value = tag.attrib['v']
+            returned[key] = value
+        return returned
+
     def get_coords(self):
         if self.element.tag == "node":
             lat = float(self.element.attrib['lat'])
