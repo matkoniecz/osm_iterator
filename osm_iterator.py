@@ -1,7 +1,6 @@
 ﻿# coding=utf-8
 
 from lxml import etree
-import decimal
 
 """
 usage:
@@ -139,8 +138,8 @@ class Data(object):
             if lxml_element.tag != "node" and lxml_element.tag != "way" and lxml_element.tag != "relation":
                 continue
             if lxml_element.tag == "node":
-                lat = decimal.Decimal(lxml_element.attrib['lat']) #TODO HACk - in one place I use decimal, in one float...
-                lon = decimal.Decimal(lxml_element.attrib['lon']) #TODO HACK - see above
+                lat = float(lxml_element.attrib['lat'])
+                lon = float(lxml_element.attrib['lon'])
                 osm_id = int(lxml_element.attrib['id'])
                 self.node_database[osm_id] = Coord(lat, lon)
             if lxml_element.tag == "way":
