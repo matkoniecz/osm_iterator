@@ -87,28 +87,28 @@ class Data(object):
         lon = database[id].lon
         return lat, lon
 
-    def get_bbox_of_object(self, element):
-        if element.tag == "way" or element.tag == "relation":
-            return self.get_bbox_of_complex_object(element)
-        if element.tag == "node":
-            return self.get_bbox_of_node_object(element)
+    def get_bbox_of_object(self, lxml_element):
+        if lxml_element.tag == "way" or lxml_element.tag == "relation":
+            return self.get_bbox_of_complex_object(lxml_element)
+        if lxml_element.tag == "node":
+            return self.get_bbox_of_node_object(lxml_element)
 
-    def get_bbox_of_node_object(self, element):
-        if element.tag == "node":
-            lat = element.attrib['lat']
-            lon = element.attrib['lon']
+    def get_bbox_of_node_object(self, lxml_element):
+        if lxml_element.tag == "node":
+            lat = lxml_element.attrib['lat']
+            lon = lxml_element.attrib['lon']
             return {'min_lat': lat, 'min_lon': lon, 'max_lat': lat, 'max_lon': lon}
         else:
-            raise ValueError("Not a proper element passed to get_bbox_of_node_object")
+            raise ValueError("Not a proper lxml_element passed to get_bbox_of_node_object")
 
-    def get_bbox_of_complex_object(self, element):
+    def get_bbox_of_complex_object(self, lxml_element):
         min_lat = 180
         max_lat = -180
         min_lon = 180
         max_lon = -180
-        if element.tag != "way" and element.tag != "relation":
-            raise ValueError("Not a proper element passed to get_coords_of_complex_object")
-        for tag in element:
+        if lxml_element.tag != "way" and lxml_element.tag != "relation":
+            raise ValueError("Not a proper lxml_element passed to get_coords_of_complex_object")
+        for tag in lxml_element:
             if (tag.tag == "nd") or (tag.tag == "member" and tag.attrib['type'] == "node"):
                 node_id = int(tag.attrib['ref'])
                 lat, lon = self.get_coords_of_object_in_database(node_id, self.node_database)
@@ -127,25 +127,25 @@ class Data(object):
             max_lon = max([max_lon, lon])
         return {'min_lat': min_lat, 'min_lon': min_lon, 'max_lat': max_lat, 'max_lon': max_lon}
 
-    def get_coords_of_complex_object(self, element):
-        bb = self.get_bbox_of_complex_object(element)
+    def get_coords_of_complex_object(self, lxml_element):
+        bb = self.get_bbox_of_complex_object(lxml_element)
         if bb == None:
             return None
         return Coord((bb['min_lat'] + bb['max_lat']) / 2, (bb['min_lon'] + bb['max_lon']) / 2)
 
 
     def iterate_over_data(self, fun):
-        for element in self.data.getiterator():
-            if element.tag != "node" and element.tag != "way" and element.tag != "relation":
+        for lxml_element in self.data.getiterator():
+            if lxml_element.tag != "node" and lxml_element.tag != "way" and lxml_element.tag != "relation":
                 continue
-            if element.tag == "node":
-                lat = decimal.Decimal(element.attrib['lat'])
-                lon = decimal.Decimal(element.attrib['lon'])
-                osm_id = int(element.attrib['id'])
+            if lxml_element.tag == "node":
+                lat = decimal.Decimal(lxml_element.attrib['lat'])
+                lon = decimal.Decimal(lxml_element.attrib['lon'])
+                osm_id = int(lxml_element.attrib['id'])
                 self.node_database[osm_id] = Coord(lat, lon)
-            if element.tag == "way":
-                coords = self.get_coords_of_complex_object(element)
-                osm_id = int(element.attrib['id'])
+            if lxml_element.tag == "way":
+                coords = self.get_coords_of_complex_object(lxml_element)
+                osm_id = int(lxml_element.attrib['id'])
                 self.way_database[osm_id] = coords
-            fun(Element(element, self))
+            fun(Element(lxml_element, self))
 
