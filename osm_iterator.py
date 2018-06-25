@@ -2,22 +2,6 @@
 
 from lxml import etree
 
-"""
-usage:
-
-from osm_iterator.osm_iterator import Data
-
-def show_places(element):
-    place_tag = element.get_tag_value("place")
-    name_tag = element.get_tag_value("name")
-    osm_object_url = element.get_link()
-    if place_tag != None:
-        print(name_tag + " is an object " + osm_object_url)
-
-osm = Data("file.osm")
-osm.iterate_over_data(show_places)
-
-"""
 class Coord:
     def __init__(self, lat, lon):
         self.lat = lat
