@@ -36,4 +36,6 @@ Run from directory with `setup.py`:
 
 `python3 setup.py sdist bdist_wheel`
 
+one can make local install from dist folder like `pip3 install osm_iterator-0.0.4-py3-none-any.whl`
+
 `twine upload dist/*`
