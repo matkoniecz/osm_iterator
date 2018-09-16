@@ -26,7 +26,7 @@ This situation is consequence of following facts
 
 * This code was written during my first attempt to process OSM data using Python
 * API allows (at least in theory) to painlessly switch to real iterator that is not loading all data into memory at once
-* So far this was good enough for my purposes so I had no motivation to spend time on something working well
+* So far this was good enough for my purposes so I had no motivation to spend time on improving something that is not a bottleneck
 
 Though, if someone has good ideas (especially in form of a working code) - comments and pull requests are welcomed.
 
