@@ -30,12 +30,15 @@ This situation is consequence of following facts
 
 Though, if someone has good ideas (especially in form of a working code) - comments and pull requests are welcomed.
 
+# Running tests
+
+```nosetests3``` or ```python3 -m unittest```
+
+
 # Publishing new version
 
-Run from directory with `setup.py`:
+- run tests (see section above)
+- bump version in `setup.py` file in the top directory
+- from the top directory run `python3 setup.py sdist bdist_wheel` and `twine upload dist/*`
+- one can make local install, without publishing to PyPi. Run from dist folder command like `pip3 install osm_iterator-0.0.4-py3-none-any.whl`
 
-`python3 setup.py sdist bdist_wheel`
-
-one can make local install from dist folder like `pip3 install osm_iterator-0.0.4-py3-none-any.whl`
-
-`twine upload dist/*`
