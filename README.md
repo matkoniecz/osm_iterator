@@ -40,5 +40,4 @@ Though, if someone has good ideas (especially in form of a working code) - comme
 - run tests (see section above)
 - bump version in `setup.py` file in the top directory
 - from the top directory run `python3 setup.py sdist bdist_wheel` and `twine upload dist/*`
-- one can make local install, without publishing to PyPi. Run from dist folder command like `pip3 install osm_iterator-0.0.4-py3-none-any.whl`
-
+- one can make local install, without publishing to PyPi. Run from dist folder command like `pip3 install <recent package>.whl`
