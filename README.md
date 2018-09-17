@@ -34,7 +34,6 @@ Though, if someone has good ideas (especially in form of a working code) - comme
 
 ```nosetests3``` or ```python3 -m unittest```
 
-
 # Publishing new version
 
 - run tests (see section above)
