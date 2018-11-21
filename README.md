@@ -24,6 +24,10 @@ osm = Data("file.osm")
 osm.iterate_over_data(show_places)
 ```
 
+# Running tests
+
+```nosetests3``` or ```python3 -m unittest```
+
 # History
 
 Design explanation: this code has deeply suboptimal handling of pretty much everything. For start, all data is loaded into memory and then duplicated in-memory dataset is created.
@@ -36,8 +40,5 @@ This situation is consequence of following facts
 * API allows (at least in theory) to painlessly switch to real iterator that is not loading all data into memory at once
 * So far this was good enough for my purposes so I had no motivation to spend time on improving something that is not a bottleneck
 
-Though, if someone has good ideas (especially in form of a working code) - comments and pull requests are welcomed.
+Though, if someone has good ideas for improvements (especially in form of a working code) - comments and pull requests are welcomed.
 
-# Running tests
-
-```nosetests3``` or ```python3 -m unittest```
