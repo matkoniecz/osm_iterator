@@ -1,8 +1,14 @@
 This code loads .osm file and allows to call function on all OSM objects in dataset.
 
+# Installation
+
+`pip install osm-iterator`
+
 It is distributed as an `osm_iterator` PyPI package.
 
-Usage example:
+[![PyPI version](https://badge.fury.io/py/osm-iterator.svg)](https://badge.fury.io/py/osm-iterator)
+
+# Usage example
 
 ```
 from osm_iterator.osm_iterator import Data
@@ -17,6 +23,8 @@ def show_places(element):
 osm = Data("file.osm")
 osm.iterate_over_data(show_places)
 ```
+
+# History
 
 Design explanation: this code has deeply suboptimal handling of pretty much everything. For start, all data is loaded into memory and then duplicated in-memory dataset is created.
 
