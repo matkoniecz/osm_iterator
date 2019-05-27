@@ -48,8 +48,8 @@ class Element(etree._Element):
             return Coord(lat, lon)
         return self.data.get_coords_of_complex_object(self.element)
 
-    def get_bbox(self):
-        return self.data.get_bbox_of_object(self.element)
+    def get_bbox(self, verbose=False):
+        return self.data.get_bbox_of_object(self.element, verbose)
 
     def get_link(self):
         return ("http://www.openstreetmap.org/" + self.element.tag + "/" + self.element.attrib['id'])
@@ -70,9 +70,9 @@ class Data(object):
         lon = database[id].lon
         return lat, lon
 
-    def get_bbox_of_object(self, lxml_element):
+    def get_bbox_of_object(self, lxml_element, verbose=False):
         if lxml_element.tag == "way" or lxml_element.tag == "relation":
-            return self.get_bbox_of_complex_object(lxml_element)
+            return self.get_bbox_of_complex_object(lxml_element, verbose)
         if lxml_element.tag == "node":
             return self.get_bbox_of_node_object(lxml_element)
 
@@ -84,7 +84,7 @@ class Data(object):
         else:
             raise ValueError("Not a proper lxml_element passed to get_bbox_of_node_object")
 
-    def get_bbox_of_complex_object(self, lxml_element):
+    def get_bbox_of_complex_object(self, lxml_element, verbose=False):
         min_lat = 180
         max_lat = -180
         min_lon = 180
@@ -96,11 +96,15 @@ class Data(object):
                 node_id = int(tag.attrib['ref'])
                 lat, lon = self.get_coords_of_object_in_database(node_id, self.node_database)
                 if lat == None:
+                    if verbose:
+                        print("No data for node", node_id)
                     return None
             elif tag.tag == "member" and tag.attrib['type'] == "way":
                 way_id = int(tag.attrib['ref'])
                 lat, lon = self.get_coords_of_object_in_database(way_id, self.way_database)
                 if lat == None:
+                    if verbose:
+                        print("No data for way", way_id)
                     return None
             else:
                 continue
