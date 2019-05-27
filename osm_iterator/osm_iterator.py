@@ -123,16 +123,18 @@ class Data(object):
 
     def iterate_over_data(self, fun):
         for lxml_element in self.data.getiterator():
-            if lxml_element.tag != "node" and lxml_element.tag != "way" and lxml_element.tag != "relation":
-                continue
             if lxml_element.tag == "node":
                 lat = float(lxml_element.attrib['lat'])
                 lon = float(lxml_element.attrib['lon'])
                 osm_id = int(lxml_element.attrib['id'])
                 self.node_database[osm_id] = Coord(lat, lon)
+        for lxml_element in self.data.getiterator():
             if lxml_element.tag == "way":
                 coords = self.get_coords_of_complex_object(lxml_element)
                 osm_id = int(lxml_element.attrib['id'])
                 self.way_database[osm_id] = coords
+        for lxml_element in self.data.getiterator():
+            if lxml_element.tag != "node" and lxml_element.tag != "way" and lxml_element.tag != "relation":
+                continue
             fun(Element(lxml_element, self))
 
