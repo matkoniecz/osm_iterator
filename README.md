@@ -18,7 +18,7 @@ def show_places(element):
     name_tag = element.get_tag_value("name")
     osm_object_url = element.get_link()
     if place_tag != None:
-        print(name_tag + " is an object " + osm_object_url)
+        print(name_tag, "is an object", osm_object_url)
 
 osm = Data("file.osm")
 osm.iterate_over_data(show_places)
