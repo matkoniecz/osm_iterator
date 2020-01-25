@@ -14,8 +14,8 @@ setuptools.setup(
     url="https://github.com/matkoniecz/osm_iterator",
     packages=setuptools.find_packages(),
     install_requires = [
-        'lxml>=3.5.0, <4.0',
-        'nose>=1.3.7, <2.0',
+        'lxml>=3.5.0',
+        'nose>=1.3.7',
     ],
     classifiers=(
         "Programming Language :: Python :: 3",
