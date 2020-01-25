@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="osm_iterator",
-    version="1.1.1",
+    version="1.1.2",
     author="Mateusz Konieczny",
     author_email="matkoniecz@gmail.com",
     description="Iterate over .osm file and call a provided callback function for each element",
