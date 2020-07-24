@@ -49,6 +49,16 @@ class Element(etree._Element):
             lat = float(self.element.attrib['lat'])
             lon = float(self.element.attrib['lon'])
             return Coord(lat, lon)
+
+        # elements obtained with 'out center;' in overpass
+        if self.element.tag == "way" or self.element.tag == "relation":
+            for tag in self.element:
+                if tag.tag != "center":
+                    continue
+                lat = float(tag.attrib['lat'])
+                lon = float(tag.attrib['lon'])
+                return Coord(lat, lon)
+
         return self.data.get_coords_of_complex_object(self.element)
 
     def get_bbox(self, verbose=False):
