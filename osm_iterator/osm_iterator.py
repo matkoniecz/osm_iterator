@@ -59,7 +59,11 @@ class Element(etree._Element):
 
 class Data(object):
     def __init__(self, filename_with_osm_data):
-        self.data = etree.parse(filename_with_osm_data)
+        try:
+            self.data = etree.parse(filename_with_osm_data)
+        except etree.XMLSyntaxError as e:
+            print("failed to open", filename_with_osm_data)
+            raise e
         self.node_database = {}
         self.way_database = {}
 
