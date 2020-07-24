@@ -7,6 +7,9 @@ class Coord:
         self.lat = lat
         self.lon = lon
 
+    def __str__(self):
+        return "(" + str(self.lat) + ", " + str(self.lon) + ")"
+
 class Element(etree._Element):
     def __init__(self, element, data):
         self.element = element
