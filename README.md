@@ -26,7 +26,7 @@ osm.iterate_over_data(show_places)
 
 # Running tests
 
-```nosetests3``` or ```python3 -m unittest```
+```nosetests3``` or ```python3 -m unittest``` or ```python3 tests.py```
 
 # History
 
