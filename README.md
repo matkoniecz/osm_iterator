@@ -4,12 +4,15 @@ This code loads .osm file and allows to call function on all OSM objects in data
 
 `pip install osm-iterator`
 
+Likely `pip3 install osm-iterator` if `pip` points to Python2 pip.
+
 It is distributed as an `osm_iterator` PyPI package.
 
 [![PyPI version](https://badge.fury.io/py/osm-iterator.svg)](https://badge.fury.io/py/osm-iterator)
 
 # Usage example
 
+This usage example includes downloading data using `requests` library, that you may need to install (also available via pip).
 ```
 from osm_iterator import osm_iterator
 import requests
