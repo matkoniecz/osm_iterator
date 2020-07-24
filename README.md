@@ -11,16 +11,40 @@ It is distributed as an `osm_iterator` PyPI package.
 # Usage example
 
 ```
-from osm_iterator.osm_iterator import Data
+from osm_iterator import osm_iterator
+import requests
+import os.path
+
+def download_from_overpass(query, output_filepath):
+  print(query)
+  url = "http://overpass-api.de/api/interpreter"
+  r = requests.get(url, params={'data': query})
+  result = r.text
+  with open(output_filepath, 'w') as file:
+      file.write(str(result))
 
 def show_places(element):
     place_tag = element.get_tag_value("place")
     name_tag = element.get_tag_value("name")
     osm_object_url = element.get_link()
     if place_tag != None:
-        print(name_tag, "is an object", osm_object_url)
+        print(name_tag, "(", place_tag, ") is ", osm_object_url)
 
-osm = Data("file.osm")
+filepath = "places_in_Kraków.osm"
+query = """
+[out:xml][timeout:2500];
+area[name='Kraków']->.searchArea;
+(
+  node["place"](area.searchArea);
+  way["place"](area.searchArea);
+  relation["place"](area.searchArea);
+);
+out center;
+"""
+
+if os.path.isfile(filepath) == False:
+    download_from_overpass(query, filepath)
+osm = osm_iterator.Data(filepath)
 osm.iterate_over_data(show_places)
 ```
 
