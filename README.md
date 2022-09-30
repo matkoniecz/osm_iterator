@@ -12,6 +12,7 @@ It is distributed as an `osm_iterator` PyPI package.
 
 # Usage example
 
+## Download data and show it
 This usage example includes downloading data using `requests` library, that you may need to install (also available via pip).
 ```
 from osm_iterator import osm_iterator
@@ -49,6 +50,26 @@ if os.path.isfile(filepath) == False:
     download_from_overpass(query, filepath)
 osm = osm_iterator.Data(filepath)
 osm.iterate_over_data(show_places)
+```
+
+## Load data only
+
+```
+from osm_iterator import osm_iterator
+
+global osm_object_store
+osm_object_store = []
+
+def record_objects(element):
+    global osm_object_store
+    print(element.element.tag, element.element.attrib['id'])
+    osm_object_store.append({"type": element.get_type(), "id": element.get_id()})
+
+filepath = "output.osm"
+osm = osm_iterator.Data(filepath)
+osm.iterate_over_data(record_objects)
+for entry in osm_object_store:
+    print(entry)
 ```
 
 # Running tests

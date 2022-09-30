@@ -64,8 +64,14 @@ class Element(etree._Element):
     def get_bbox(self, verbose=False):
         return self.data.get_bbox_of_object(self.element, verbose)
 
+    def get_type(self):
+        return self.element.tag
+
+    def get_id(self):
+        return self.element.attrib['id']
+
     def get_link(self):
-        return ("https://www.openstreetmap.org/" + self.element.tag + "/" + self.element.attrib['id'])
+        return ("https://www.openstreetmap.org/" + self.get_type() + "/" + self.get_id())
 
 class Data(object):
     def __init__(self, filename_with_osm_data):
