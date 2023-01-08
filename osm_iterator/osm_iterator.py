@@ -73,6 +73,9 @@ class Element(etree._Element):
     def get_link(self):
         return ("https://www.openstreetmap.org/" + self.get_type() + "/" + self.get_id())
 
+    def get_id_edit_link(self):
+        return ("https://www.openstreetmap.org/edit?editor=id&" +  self.get_type() + "=" + self.get_id())
+
 class Data(object):
     def __init__(self, filename_with_osm_data):
         try:
