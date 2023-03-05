@@ -71,10 +71,18 @@ class Element(etree._Element):
         return self.element.attrib['id']
 
     def get_link(self):
-        return ("https://www.openstreetmap.org/" + self.get_type() + "/" + self.get_id())
+        return "https://www.openstreetmap.org/" + self.get_type() + "/" + self.get_id()
+
+    # broken due to https://github.com/openstreetmap/openstreetmap-website/issues/3940
+    #def get_link_with_notes_shown(self):
+    #    return self.get_link() + "#layers=N"
 
     def get_history_link(self):
-        return ("https://www.openstreetmap.org/" + self.get_type() + "/" + self.get_id() + "/history")
+        return "https://www.openstreetmap.org/" + self.get_type() + "/" + self.get_id() + "/history"
+
+    # broken due to https://github.com/openstreetmap/openstreetmap-website/issues/3940
+    #def get_history_link_with_notes_shown(self):
+    #    return self.get_history_link() + "#layers=N"
 
     def get_id_edit_link(self):
         return ("https://www.openstreetmap.org/edit?editor=id&" +  self.get_type() + "=" + self.get_id())
