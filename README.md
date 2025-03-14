@@ -8,7 +8,7 @@ Likely `pip3 install osm-iterator` if `pip` points to Python2 pip.
 
 It is distributed as an `osm_iterator` PyPI package.
 
-[![PyPI version](https://badge.fury.io/py/osm-iterator.svg)](https://badge.fury.io/py/osm-iterator)
+[![PyPI version](https://badge.fury.io/py/osm-iterator.svg)](https://pypi.org/project/osm-iterator/)
 
 # Usage example
 
