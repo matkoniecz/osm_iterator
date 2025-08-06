@@ -9,6 +9,9 @@ class Coord:
 
     def __str__(self):
         return "(" + str(self.lat) + ", " + str(self.lon) + ")"
+    
+    def distance_to(self, another_coord):
+        return abs(self.lat - another_coord.lat)**2 + abs(self.lon - another_coord.lon)**2
 
 class Element(etree._Element):
     def __init__(self, element, data):
@@ -60,6 +63,14 @@ class Element(etree._Element):
                 return Coord(lat, lon)
 
         return self.data.get_coords_of_complex_object(self.element)
+
+    def get_coords_snapped_to_element(self):
+        if self.element.tag == "node":
+            lat = float(self.element.attrib['lat'])
+            lon = float(self.element.attrib['lon'])
+            return Coord(lat, lon)
+
+        return self.data.get_coords_of_complex_object_snapped_to_element(self.element)
 
     def get_bbox(self, verbose=False):
         return self.data.get_bbox_of_object(self.element, verbose)
@@ -156,6 +167,34 @@ class Data(object):
         if bb == None:
             return None
         return Coord((bb['min_lat'] + bb['max_lat']) / 2, (bb['min_lon'] + bb['max_lon']) / 2)
+
+    def get_coords_of_complex_object_snapped_to_element(self, lxml_element, verbose=False):
+        center = self.get_coords_of_complex_object(lxml_element)
+        best = None
+        if lxml_element.tag != "way" and lxml_element.tag != "relation":
+            raise ValueError("Not a proper lxml_element passed to get_coords_of_complex_object_snapped_to_element")
+        for tag in lxml_element:
+            if (tag.tag == "nd") or (tag.tag == "member" and tag.attrib['type'] == "node"):
+                node_id = int(tag.attrib['ref'])
+                lat, lon = self.get_coords_of_object_in_database(node_id, self.node_database)
+                if lat == None:
+                    if verbose:
+                        print("No data for node", node_id)
+                    continue
+                if best == None or best.distance_to(center) > Coord(lat, lon).distance_to(center):
+                    best = Coord(lat, lon)
+            elif tag.tag == "member" and tag.attrib['type'] == "way":
+                way_id = int(tag.attrib['ref'])
+                lat, lon = self.get_coords_of_object_in_database(way_id, self.way_database)
+                if lat == None:
+                    if verbose:
+                        print("No data for way", way_id)
+                    continue
+                if best == None or best.distance_to(center) > Coord(lat, lon).distance_to(center):
+                    best = Coord(lat, lon)
+            else:
+                continue
+        return best
 
 
     def iterate_over_data(self, fun):
